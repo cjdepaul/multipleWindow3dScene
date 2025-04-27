@@ -31,6 +31,9 @@ function getTime ()
 if (new URLSearchParams(window.location.search).get("clear"))
 {
 	localStorage.clear();
+	let baseUrl = window.location.origin + window.location.pathname;
+	window.location.href = baseUrl;
+	
 }
 else
 {	
