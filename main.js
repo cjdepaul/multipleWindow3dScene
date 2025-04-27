@@ -127,7 +127,7 @@ else
 			let win = wins[i];
 		
 			let c = new t.Color();
-			c.setHSL(i * .1, 1.0, .5);
+			c.setHSL(i * .075, 1.0, .5);
 		
 			let s = 100 + i * 25; // Increased size
 			let particleCount = 40000; // Number of particles
