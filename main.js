@@ -120,18 +120,42 @@ else
 		cubes = [];
 
 		// add new cubes based on the current window setup
-		for (let i = 0; i < wins.length; i++)
-		{
+		for (let i = 0; i < wins.length; i++) {
 			let win = wins[i];
-
+		
 			let c = new t.Color();
 			c.setHSL(i * .1, 1.0, .5);
-
-			let s = 100 + i * 50;
-			let cube = new t.Mesh(new t.BoxGeometry(s, s, s), new t.MeshBasicMaterial({color: c , wireframe: true}));
+		
+			let s = 100 + i * 25; // Increased size
+			let particleCount = 40000; // Number of particles
+			let particles = new Float32Array(particleCount * 3);
+			
+			// Create sphere points
+			for(let p = 0; p < particleCount; p++) {
+				let radius = s;
+				let theta = Math.random() * Math.PI * 2;
+				let phi = Math.acos((Math.random() * 2) - 1);
+				
+				particles[p * 3] = radius * Math.sin(phi) * Math.cos(theta);
+				particles[p * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+				particles[p * 3 + 2] = radius * Math.cos(phi);
+			}
+			
+			let particleGeometry = new t.BufferGeometry();
+			particleGeometry.setAttribute('position', new t.BufferAttribute(particles, 3));
+			
+			let material = new t.PointsMaterial({
+				color: c,
+				size: 1,
+				sizeAttenuation: true,
+				transparent: true,
+				opacity: 0.5
+			});
+		
+			let cube = new t.Points(particleGeometry, material);
 			cube.position.x = win.shape.x + (win.shape.w * .5);
 			cube.position.y = win.shape.y + (win.shape.h * .5);
-
+		
 			world.add(cube);
 			cubes.push(cube);
 		}
